@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-contract ArrayOfFacts {
+contract sample {
     string[] private facts;
     address private contractOwner;
 
