@@ -43,7 +43,7 @@ app.route("/").post(async (req, res) => {
   
   try{
     await compileContract("./sample.sol", "sample")
-    ABI = compiledContract.abi;
+    ABI = JSON.stringify(compiledContract.abi);
     BYTECODE = "0x" + compiledContract.evm.bytecode.object;
 
     res.send({
