@@ -112,35 +112,39 @@ function App() {
       .then((res) => {
         console.log(res.data);
 
-        // let abi = compiledContract.abi;
+        let abi = res.data.ABI;
+        let bytecode = res.data.BYTECODE;
 
-        // let bytecode = "0x" + compiledContract.evm.bytecode.object;
+         
 
-        // let deploy_contract = new web3.eth.Contract(JSON.parse(abi));
+         console.log(abi);
+         console.log(bytecode);
 
-        // let payload = {
-        //   data: bytecode,
-        // };
+        let deploy_contract = new web3.eth.Contract(JSON.parse(abi));
 
-        // let parameter = {
-        //   from: user,
-        //   gas: web3.utils.toHex(800000),
-        //   gasPrice: web3.utils.toHex(web3.utils.toWei("30", "gwei")),
-        // };
+        let payload = {
+          data: bytecode,
+        };
 
-        // // Function Call
-        // deploy_contract
-        //   .deploy(payload)
-        //   .send(parameter, (err, transactionHash) => {
-        //     console.log("Transaction Hash :", transactionHash);
-        //   })
-        //   .on("confirmation", () => {})
-        //   .then((newContractInstance) => {
-        //     console.log(
-        //       "Deployed Contract Address : ",
-        //       newContractInstance.options.address
-        //     );
-        //   });
+        let parameter = {
+          from: user,
+          gas: web3.utils.toHex(800000),
+          gasPrice: web3.utils.toHex(web3.utils.toWei("30", "gwei")),
+        };
+
+        // Function Call
+        deploy_contract
+          .deploy(payload)
+          .send(parameter, (err, transactionHash) => {
+            console.log("Transaction Hash :", transactionHash);
+          })
+          .on("confirmation", () => {})
+          .then((newContractInstance) => {
+            console.log(
+              "Deployed Contract Address : ",
+              newContractInstance.options.address
+            );
+          });
       })
       .catch((err) => {
         console.log(err);
