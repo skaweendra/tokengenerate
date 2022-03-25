@@ -42,7 +42,7 @@ app.route("/").post(async (req, res) => {
   const { name } = req.body;
   
   try{
-    await compileContract("./sample.sol", "sample")
+    await compileContract("./contracts/sample.sol", "sample")
     ABI = JSON.stringify(compiledContract.abi);
     BYTECODE = "0x" + compiledContract.evm.bytecode.object;
 
