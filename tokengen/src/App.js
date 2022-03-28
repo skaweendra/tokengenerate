@@ -1,4 +1,3 @@
-import logo from "./logo.svg";
 import "./App.css";
 import Web3 from "web3";
 import React, { useEffect, useState } from "react";
@@ -43,6 +42,21 @@ function App() {
     } catch (e) {}
   };
 
+  const [inputs, setInputs] = useState({
+    name: '',
+    symbol: ''
+  });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  }
+
+  const handleChange = (e) => {
+    setInputs((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value
+    }))
+  }
   // function compileContract(fileName, contractName) {
   //   const contractCode = fs.readFileSync(fileName).toString();
 
@@ -107,8 +121,8 @@ function App() {
   const deopycontract = () => {
     axios
       .post("http://localhost:8070/", {
-        name: "Mytoken",
-        symbol: "tkn",
+         name: String(inputs.name),
+         symbol: String(inputs.symbol),
         gas_fee: "0.1",
       })
       .then((res) => {
@@ -155,8 +169,12 @@ function App() {
 
   return (
     <div className="App">
-      <button onClick={MetaMask}>connect</button>
-      <button onClick={deopycontract}>deploy token</button>
+      <button onClick={MetaMask}>connect</button><br/>
+      <form onSubmit={handleSubmit}>
+      <input type="text" value={inputs.name} onChange={handleChange} placeholder="Token Name" name="name" /><br/>
+      <input type="text" value={inputs.symbol} onChange={handleChange} placeholder="Token Symbol" name="symbol"/><br/>
+      <button onClick={deopycontract}>deploy token</button><br/>
+      </form>
     </div>
   );
 }
