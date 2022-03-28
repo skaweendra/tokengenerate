@@ -107,7 +107,9 @@ function App() {
   const deopycontract = () => {
     axios
       .post("http://localhost:8070/", {
-        name: "tokengen",
+        name: "Mytoken",
+        symbol: "tkn",
+        gas_fee: "0.1",
       })
       .then((res) => {
         console.log(res.data);
@@ -128,8 +130,8 @@ function App() {
 
         let parameter = {
           from: user,
-          gas: web3.utils.toHex(800000),
-          gasPrice: web3.utils.toHex(web3.utils.toWei("30", "gwei")),
+          gas: web3.utils.toHex(1800000),
+          gasPrice: web3.utils.toHex(web3.utils.toWei("50", "gwei")),
         };
 
         // Function Call
