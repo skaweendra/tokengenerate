@@ -115,10 +115,8 @@ function App() {
         let abi = res.data.ABI;
         let bytecode = res.data.BYTECODE;
 
-         
-
-         console.log(abi);
-         console.log(bytecode);
+        console.log(abi);
+        console.log(bytecode);
 
         let deploy_contract = new web3.eth.Contract(JSON.parse(abi));
 
@@ -128,13 +126,13 @@ function App() {
 
         let parameter = {
           from: user,
-          gas: web3.utils.toHex(800000),
-          gasPrice: web3.utils.toHex(web3.utils.toWei("30", "gwei")),
+          gas: web3.utils.toHex(1800000),
+          gasPrice: web3.utils.toHex(web3.utils.toWei("50", "gwei")),
         };
 
         // Function Call
         deploy_contract
-          .deploy(payload)
+          .deploy(payload, ["Top 10 Students", "Top10"])
           .send(parameter, (err, transactionHash) => {
             console.log("Transaction Hash :", transactionHash);
           })

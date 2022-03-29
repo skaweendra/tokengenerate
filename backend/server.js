@@ -15,19 +15,19 @@ function compileContract(fileName, contractName) {
   const contractCode = fs.readFileSync(fileName).toString();
 
   let standardCompilerInput = {
-      language: "Solidity",
-      sources: {
-          contract: {
-              content: contractCode
-          }
+    language: "Solidity",
+    sources: {
+      contract: {
+        content: contractCode,
       },
-      settings: {
-          outputSelection: {
-              "*": {
-                  "*": ["abi", "evm.bytecode"]
-              }
-          }
-      }
+    },
+    settings: {
+      outputSelection: {
+        "*": {
+          "*": ["abi", "evm.bytecode"],
+        },
+      },
+    },
   };
 
   standardCompilerInput = JSON.stringify(standardCompilerInput);
@@ -40,21 +40,19 @@ app.use(bodyParser.json());
 const PORT = process.env.PORT || 8070;
 app.route("/").post(async (req, res) => {
   const { name } = req.body;
-  
-  try{
-    await compileContract("./contracts/sample.sol", "sample")
+
+  try {
+    await compileContract("./contracts/token.sol", "token");
     ABI = JSON.stringify(compiledContract.abi);
     BYTECODE = "0x" + compiledContract.evm.bytecode.object;
 
     res.send({
       ABI: ABI,
-      BYTECODE: BYTECODE
+      BYTECODE: BYTECODE,
     });
-
-  }catch(err){
+  } catch (err) {
     console.log(err);
   }
-  
 });
 app.listen(PORT, () => {
   console.log(`Server is up and running on port ${PORT}`);
