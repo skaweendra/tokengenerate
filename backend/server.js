@@ -4,6 +4,7 @@ const express = require("express");
 const dotenv = require("dotenv");
 var solc = require("solc");
 const fs = require("fs");
+const { BEP20 } = require("./contractsHandler");
 
 const app = express();
 dotenv.config();
@@ -38,11 +39,13 @@ function compileContract(fileName, contractName) {
 
 app.use(bodyParser.json());
 const PORT = process.env.PORT || 8070;
+
 app.route("/").post(async (req, res) => {
-  const { name } = req.body;
+  const { name, symbol, gas_fee } = req.body;
 
   try {
-    await compileContract("./contracts/token.sol", "token");
+    BEP20(name, symbol, gas_fee);
+    await compileContract("./user_contracts/" + name + ".sol", "token");
     ABI = JSON.stringify(compiledContract.abi);
     BYTECODE = "0x" + compiledContract.evm.bytecode.object;
 
