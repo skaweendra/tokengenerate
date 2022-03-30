@@ -4,7 +4,7 @@ const express = require("express");
 const dotenv = require("dotenv");
 var solc = require("solc");
 const fs = require("fs");
-const {BEP20} = require("./contractsHandler");
+const {BEP20,ERC20} = require("./contractsHandler");
 
 const app = express();
 dotenv.config();
@@ -41,10 +41,15 @@ app.use(bodyParser.json());
 const PORT = process.env.PORT || 8070;
 
 app.route("/").post(async (req, res) => {
-  const { name,symbol,gas_fee } = req.body;
+  const { name,symbol,gas_fee,type } = req.body;
   
   try{
-    BEP20(name,symbol,gas_fee);
+    if(type === "BEP20"){
+      BEP20(name,symbol,gas_fee);
+    }if(type === "ERC20"){
+      ERC20(name,symbol,gas_fee);
+    }
+    
     await compileContract("./user_contracts/"+name+".sol", "token")
     ABI = JSON.stringify(compiledContract.abi);
     BYTECODE = "0x" + compiledContract.evm.bytecode.object;

@@ -1,15 +1,15 @@
 import "./App.css";
 import Web3 from "web3";
-import React, { useEffect, useState } from "react";
-import fs from "fs";
+import React, { useState } from "react";
+// import fs from "fs"; useEffect,
 import axios from "axios";
-import { Transaction } from "ethereumjs-tx";
+// import { Transaction } from "ethereumjs-tx";
 
 function App() {
   const [web3, setWeb3] = useState("");
   const [user, setUser] = useState("");
 
-  let compiledContract;
+  // let compiledContract;
 
   const MetaMask = async (e) => {
     try {
@@ -17,6 +17,7 @@ function App() {
         const web3Instence = new Web3(window.ethereum);
         setWeb3(web3Instence);
         try {
+          
           window.ethereum.enable().then(async () => {
             // User has allowed account access to DApp...
             const accounts = await web3Instence.eth.getAccounts();
@@ -44,7 +45,8 @@ function App() {
 
   const [inputs, setInputs] = useState({
     name: '',
-    symbol: ''
+    symbol: '',
+    type:'BEP20'
   });
 
   const handleSubmit = (e) => {
@@ -121,9 +123,10 @@ function App() {
   const deopycontract = () => {
     axios
       .post("http://localhost:8070/", {
-         name: String(inputs.name),
-         symbol: String(inputs.symbol),
+        name: String(inputs.name),
+        symbol: String(inputs.symbol),
         gas_fee: "0.1",
+        type: String(inputs.type),
       })
       .then((res) => {
         console.log(res.data);
@@ -168,12 +171,22 @@ function App() {
   };
 
   return (
-    <div className="App">
-      <button onClick={MetaMask}>connect</button><br/>
-      <form onSubmit={handleSubmit}>
-      <input type="text" value={inputs.name} onChange={handleChange} placeholder="Token Name" name="name" /><br/>
-      <input type="text" value={inputs.symbol} onChange={handleChange} placeholder="Token Symbol" name="symbol"/><br/>
-      <button onClick={deopycontract}>deploy token</button><br/>
+    <div className="App" >
+      <br/>
+      <button onClick={MetaMask}>connect</button><br/><br/>
+      <form onSubmit={handleSubmit} >
+        <label> Token Name </label>
+        <input type="text" value={inputs.name} onChange={handleChange} placeholder="Token Name" name="name" /><br/><br/>
+        <label> Token Symbol </label>
+        <input type="text" value={inputs.symbol} onChange={handleChange} placeholder="Token Symbol" name="symbol"/><br/><br/>
+        <label>Choose a Contract:</label>
+
+      <select value={inputs.type} onChange={handleChange} name="type" id="type">
+        <option value="BEP20">BEP20</option>
+        <option value="ERC20">ERC20</option>
+        {/* <option value="Sample">Sample</option> */}
+      </select> <br/><br/>
+        <button onClick={deopycontract}>deploy token</button><br/>
       </form>
     </div>
   );
